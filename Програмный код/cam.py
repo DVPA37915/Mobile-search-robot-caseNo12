@@ -5,13 +5,14 @@ from time import sleep
 import datetime
 
 real_height = 0.15 #meters
-focal_length = 600 #need to calibrate
-min_contour_area = 250 #need to calibrate
+focal_length = 600 
+min_contour_area = 250
 color_ranges = {
 	"green": ([35, 50, 50], [90, 255, 255]),
 	"red": ([0, 100, 100], [10, 255, 255]),
 	"red2": ([160, 100, 100], [179, 255, 255]),
-	"blue": ([100, 50, 50], [140, 255, 255])
+	"blue": ([100, 50, 50], [140, 255, 255]),
+	"yellow": ([20, 100, 100], [40, 255, 255])
 }
 
 def calc_dist(pixel_height, focal_length, real_height):
@@ -50,11 +51,11 @@ def detect_objects(picam2):
 					"center_y": center_y,
 					"distance": distance
 				})
-			
+	frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 	cv2.imshow("Image", frame)
 	#cv2.waitKey(1)
 	return detected_objects
-def write_to_file(data, filename="cont.txt"):
+def write_to_file(data, filename="cont1.txt"):
 	with open(filename, "w") as file:
 		if data:
 			for obj in data:
@@ -70,7 +71,7 @@ while 1:
 	det_data = []
 	detected_data = detect_objects(picam2)
 	print(detected_data)
-	m=100000000
+	m=100
 	for h in detected_data:
 		n = h["distance"]
 		m = min(n,m)
